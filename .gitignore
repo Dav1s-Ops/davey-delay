@@ -1,0 +1,45 @@
+# JUCE specific ignores
+Builds/
+JuceLibraryCode/
+
+# Compiled object files
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.dll
+*.dylib
+*.so
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Log files and databases
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE specific files
+*.xcodeproj/
+*.xcworkspace/
+*.idea/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.suo
+
+# Projucer project files
+*.jucer_backup
+*.jucer_backup.*
+
+# CMake build directories
+build/
