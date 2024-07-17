@@ -12,6 +12,8 @@
 
 #include <JuceHeader.h>
 
+const juce::ParameterID gainParamID { "gain", 1 };
+
 class Parameters
 {
 public:
