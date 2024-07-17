@@ -128,9 +128,10 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
     // the samples and the outer loop is handling the channels.
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
-    float gainInDecibels = params.gainParam->get();
+    params.update();
     
-    float gain = juce::Decibels::decibelsToGain(gainInDecibels);
+    
+    float gain = params.gain;
     
     for (int channel = 0; channel < totalNumInputChannels; ++channel) {
         auto* channelData = buffer.getWritePointer(channel);
