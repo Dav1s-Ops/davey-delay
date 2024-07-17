@@ -11,17 +11,13 @@
 
 //==============================================================================
 DelayAudioProcessor::DelayAudioProcessor()
-#ifndef JucePlugin_PreferredChannelConfigurations
      : AudioProcessor (BusesProperties()
-                     #if ! JucePlugin_IsMidiEffect
-                      #if ! JucePlugin_IsSynth
                        .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
-                      #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
-                     #endif
                        )
-#endif
 {
+    auto* param = apvts.getParameter(gainParamID.getParamID());
+    gainParam = dynamic_cast<juce::AudioParameterFloat*>(param);
 }
 
 DelayAudioProcessor::~DelayAudioProcessor()
@@ -132,7 +128,7 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
     // the samples and the outer loop is handling the channels.
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
-    float gainInDecibels = apvts.getRawParameterValue(gainParamID.getParamID())->load();
+    float gainInDecibels = gainParam->get();
     
     float gain = juce::Decibels::decibelsToGain(gainInDecibels);
     
