@@ -21,5 +21,15 @@ public:
     
     static juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
     
+    // Reads Output Gain parameter
+    void update() noexcept
+    {
+        gain = juce::Decibels::decibelsToGain(gainParam->get());
+    }
+    
+    // Holds variable gain value
+    float gain = 0.0f;
+    
+private:
     juce::AudioParameterFloat* gainParam;
 };
