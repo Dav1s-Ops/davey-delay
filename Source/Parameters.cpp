@@ -41,5 +41,30 @@ juce::AudioProcessorValueTreeState::ParameterLayout Parameters::createParameterL
 // Reads Output Gain parameter
 void Parameters::update() noexcept
 {
-    gain = juce::Decibels::decibelsToGain(gainParam->get());
+    // Reads current gain value, converts decibels to linear units, uses new value
+    gainSmoother.setTargetValue(juce::Decibels::decibelsToGain(gainParam->get()));
+}
+
+void Parameters::prepareToPlay(double sampleRate) noexcept
+{
+    // 0.02s adds 20 millisecond fade
+    // this is acceptable at 48kHz
+    double duration = 0.02;
+    gainSmoother.reset(sampleRate, duration);
+}
+
+// Adds re-initializing to gain param to be safe upon host stop/start
+void Parameters::reset() noexcept
+{
+    gain = 0.0f;
+    
+    // Loads current gain value into gainSmoother obj
+    gainSmoother.setCurrentAndTargetValue(juce::Decibels::decibelsToGain(gainParam->get()));
+}
+
+// Reads current smoothed value and sets it to the gain variable
+// so the gain is always moving towards the latest parameter setting
+void Parameters::smoothen() noexcept
+{
+    gain = gainSmoother.getNextValue();
 }
