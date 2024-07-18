@@ -94,6 +94,24 @@ void DelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
     
     // Resets Parameters obj
     params.reset();
+    
+    // Initialize the juce::ProcessSpec obj with these params
+    juce::dsp::ProcessSpec spec;
+    spec.sampleRate = sampleRate;
+    spec.maximumBlockSize = juce::uint32(samplesPerBlock);
+    spec.numChannels = 2;
+    
+    delayLine.prepare(spec);
+    
+    // Sets the maximum delay length for the DelayLine to reserve an adiquate amount of memory
+    // and the numSamples logic converts the time in milliseconds to a number of samples
+    double numSamples = Parameters::maxDelayTime / 1000.0 * sampleRate;
+    int maxDelayInSamples = int(std::ceil(numSamples));
+    delayLine.setMaximumDelayInSamples(maxDelayInSamples);
+    delayLine.reset();
+    
+    // Debug line: Displays maxDelayInSamples based of sample rate
+//    DBG(maxDelayInSamples);
 }
 
 void DelayAudioProcessor::releaseResources()
@@ -164,8 +182,8 @@ void DelayAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
     copyXmlToBinary(*apvts.copyState().createXml(), destData);
     
-    //Debug line: Prints Param state to console
-    DBG(apvts.copyState().toXmlString());
+    // Debug line: Prints Param state to console
+//    DBG(apvts.copyState().toXmlString());
 }
 
 void DelayAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
