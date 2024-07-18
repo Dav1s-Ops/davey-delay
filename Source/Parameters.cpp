@@ -23,11 +23,11 @@ Parameters::Parameters(juce::AudioProcessorValueTreeState& apvts)
 {
     castParameter(apvts, gainParamID, gainParam);
 }
-
+// Return type                                      // Function name
 juce::AudioProcessorValueTreeState::ParameterLayout Parameters::createParameterLayout()
 {
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
-    
+    // Arguments passed to the AudioFloatParameter constructor
     layout.add(std::make_unique<juce::AudioParameterFloat>(gainParamID,
                                                            // Name of the parameter
                                                            "Output Gain",
