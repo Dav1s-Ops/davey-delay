@@ -38,3 +38,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout Parameters::createParameterL
     return layout;
 }
 
+// Reads Output Gain parameter
+void Parameters::update() noexcept
+{
+    gain = juce::Decibels::decibelsToGain(gainParam->get());
+}
