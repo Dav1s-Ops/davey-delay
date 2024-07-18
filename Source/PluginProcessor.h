@@ -63,4 +63,6 @@ private:
     };
     
     Parameters params;
+    
+    juce::dsp::DelayLine<float, juce::dsp::DelayLineInterpolationTypes::Linear> delayLine;
 };
