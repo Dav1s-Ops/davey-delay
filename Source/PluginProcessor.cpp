@@ -139,7 +139,9 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
     
     params.update();
     
-    delayLine.setDelay(48000.0f);
+    float sampleRate = float(getSampleRate());
+    float delayInSamples = params.delayTime / 1000.0f * sampleRate;
+    delayLine.setDelay(delayInSamples);
     
     float* channelDataL = buffer.getWritePointer(0);
     float* channelDataR = buffer.getWritePointer(1);
