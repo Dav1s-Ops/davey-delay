@@ -37,10 +37,16 @@ static juce::String stringFromDecibels(float value, int)
     return juce::String(value, 1) + " db";
 }
 
+static juce::String stringFromPercent(float value, int)
+{
+    return juce::String(int(value)) + " %";
+}
+
 Parameters::Parameters(juce::AudioProcessorValueTreeState& apvts)
 {
     castParameter(apvts, gainParamID, gainParam);
     castParameter(apvts, delayTimeParamID, delayTimeParam);
+    castParameter(apvts, mixParamID, mixParam);
 }
 // Return type                                      // Function name
 juce::AudioProcessorValueTreeState::ParameterLayout Parameters::createParameterLayout()
@@ -64,10 +70,42 @@ juce::AudioProcessorValueTreeState::ParameterLayout Parameters::createParameterL
                                                            100.0f,
                                                            juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromMilliseconds)
                                                            ));
+    layout.add(std::make_unique<juce::AudioParameterFloat>(mixParamID,
+                                                           "Mix",
+                                                           juce::NormalisableRange<float>{ 0.0f, 100.0f, 1.0f },
+                                                           100.0f,
+                                                           juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromPercent)
+                                                           ));
     return layout;
 }
 
-// Reads Output Gain parameter
+// Sets up initial conditions and prepares the parameters for playback.
+void Parameters::prepareToPlay(double sampleRate) noexcept
+{
+    // 0.02s adds 20 millisecond fade
+    // this is acceptable at 48kHz
+    double duration = 0.02;
+    gainSmoother.reset(sampleRate, duration);
+    
+    coeff = 1.0f - std::exp(-1.0f / (0.2f * float(sampleRate)));
+    
+    mixSmoother.reset(sampleRate, duration);
+}
+
+// Adds re-initializing param to be safe upon host stop/start
+void Parameters::reset() noexcept
+{
+    gain = 0.0f;
+    delayTime = 0.0f;
+    
+    // Loads current gain value into gainSmoother obj
+    gainSmoother.setCurrentAndTargetValue(juce::Decibels::decibelsToGain(gainParam->get()));
+    
+    mix = 1.0f;
+    mixSmoother.setCurrentAndTargetValue(mixParam->get() * 0.01f);
+}
+
+// Updates the parameter values based on the current settings.
 void Parameters::update() noexcept
 {
     // Reads current gain value, converts decibels to linear units, uses new value
@@ -77,33 +115,17 @@ void Parameters::update() noexcept
     if (delayTime == 0.0f) {
         delayTime = targetDelayTime;
     }
-}
-
-void Parameters::prepareToPlay(double sampleRate) noexcept
-{
-    // 0.02s adds 20 millisecond fade
-    // this is acceptable at 48kHz
-    double duration = 0.02;
-    gainSmoother.reset(sampleRate, duration);
     
-    coeff = 1.0f - std::exp(-1.0f / (0.2f * float(sampleRate)));
+    mixSmoother.setTargetValue(mixParam->get() * 0.01f);
 }
 
-// Adds re-initializing to gain param to be safe upon host stop/start
-void Parameters::reset() noexcept
-{
-    gain = 0.0f;
-    delayTime = 0.0f;
-    
-    // Loads current gain value into gainSmoother obj
-    gainSmoother.setCurrentAndTargetValue(juce::Decibels::decibelsToGain(gainParam->get()));
-}
-
-// Reads current smoothed value and sets it to the gain variable
-// so the gain is always moving towards the latest parameter setting
+// Reads current smoothed value and sets it to variable
+// so the variable is always moving towards the latest parameter setting
 void Parameters::smoothen() noexcept
 {
     gain = gainSmoother.getNextValue();
     
     delayTime += ( targetDelayTime - delayTime ) * coeff;
+    
+    mix = mixSmoother.getNextValue();
 }
