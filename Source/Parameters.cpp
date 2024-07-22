@@ -73,7 +73,10 @@ void Parameters::update() noexcept
     // Reads current gain value, converts decibels to linear units, uses new value
     gainSmoother.setTargetValue(juce::Decibels::decibelsToGain(gainParam->get()));
     
-    delayTime = delayTimeParam->get();
+    targetDelayTime = delayTimeParam->get();
+    if (delayTime == 0.0f) {
+        delayTime = targetDelayTime;
+    }
 }
 
 void Parameters::prepareToPlay(double sampleRate) noexcept
@@ -82,6 +85,8 @@ void Parameters::prepareToPlay(double sampleRate) noexcept
     // this is acceptable at 48kHz
     double duration = 0.02;
     gainSmoother.reset(sampleRate, duration);
+    
+    coeff = 1.0f - std::exp(-1.0f / (0.2f * float(sampleRate)));
 }
 
 // Adds re-initializing to gain param to be safe upon host stop/start
@@ -99,4 +104,6 @@ void Parameters::reset() noexcept
 void Parameters::smoothen() noexcept
 {
     gain = gainSmoother.getNextValue();
+    
+    delayTime += ( targetDelayTime - delayTime ) * coeff;
 }
