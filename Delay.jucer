@@ -14,6 +14,8 @@
             file="Source/PluginEditor.cpp"/>
       <FILE id="YzwlHM" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
       <FILE id="kqW7Zz" name="Parameters.cpp" compile="1" resource="0" file="Source/Parameters.cpp"/>
+      <FILE id="xkk9nw" name="RotaryKnob.cpp" compile="1" resource="0" file="Source/RotaryKnob.cpp"/>
+      <FILE id="BELipm" name="RotaryKnob.h" compile="0" resource="0" file="Source/RotaryKnob.h"/>
       <FILE id="t6CTfu" name="Parameters.h" compile="0" resource="0" file="Source/Parameters.h"/>
     </GROUP>
   </MAINGROUP>
