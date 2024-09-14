@@ -5,6 +5,9 @@
               companyName="DMP (Davis Makes Plugins)" companyWebsite="www.dw-portfolio.com"
               pluginManufacturerCode="DMP1" pluginCode="Dlay" cppLanguageStandard="20">
   <MAINGROUP id="ihsJiT" name="Davey Delay">
+    <GROUP id="{F9B39A64-22A8-3C63-31F7-35C9BEEE3167}" name="Assets">
+      <FILE id="DaztNa" name="Lato-Medium.ttf" compile="0" resource="1" file="../getting-started-book/Resources/Lato-Medium.ttf"/>
+    </GROUP>
     <GROUP id="{017ADE95-4AD8-ABCF-3C2A-CB513CA675AD}" name="Source">
       <FILE id="iEYHGb" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
