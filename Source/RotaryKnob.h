@@ -20,7 +20,7 @@ public:
     RotaryKnob(const juce::String& text,
                juce::AudioProcessorValueTreeState& apvts,
                const juce::ParameterID& parameterID,
-               );
+               bool drawFromMiddle = false);
     ~RotaryKnob() override;
 
     void resized() override;
