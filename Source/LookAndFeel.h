@@ -31,12 +31,30 @@ namespace Colors
         const juce::Colour value { 240, 240, 240 };
         const juce::Colour caret { 255, 255, 255 };
     }
+    namespace Group
+    {
+        const juce::Colour label { 160, 155, 150 };
+        const juce::Colour outline { 235, 230, 225 };
+    }
 }
+
+class Fonts
+{
+public:
+    static juce::Font getFont(float height = 16.0f);
+    
+    Fonts() = delete;
+    
+private:
+    static const juce::Typeface::Ptr typeface;
+};
 
 class RotaryKnobLookAndFeel : public juce::LookAndFeel_V4
 {
 public:
     RotaryKnobLookAndFeel();
+    
+    juce::Font getLabelFont(juce::Label&) override;
     
     static RotaryKnobLookAndFeel* get()
     {
