@@ -40,4 +40,30 @@ void RotaryKnobLookAndFeel::drawRotarySlider(juce::Graphics& g,
                                          Colors::Knob::gradientBottom, 0.0f, innerRect.getBottom(), false);
     g.setGradientFill(gradient);
     g.fillEllipse(innerRect);
+    
+    //==============================================================================
+    // Knob track
+    //==============================================================================
+    
+    auto center = bounds.getCentre();
+    auto radius = bounds.getWidth() / 2.0f;
+    auto lineWidth = 3.0f;
+    auto arcRadius = radius - lineWidth/2.0f;
+
+    juce::Path backgroundArc;
+    backgroundArc.addCentredArc(center.x,
+                                center.y,
+                                arcRadius,
+                                arcRadius,
+                                0.0f,
+                                rotaryStartAngle,
+                                rotaryEndAngle,
+                                true);
+    
+    auto strokeType = juce::PathStrokeType(lineWidth,
+                                           juce::PathStrokeType::curved,
+                                           juce::PathStrokeType::rounded);
+    
+    g.setColour(Colors::Knob::trackBackground);
+    g.strokePath(backgroundArc, strokeType);
 }
