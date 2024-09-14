@@ -10,6 +10,8 @@
             file="Source/PluginProcessor.cpp"/>
       <FILE id="Aap1cE" name="PluginProcessor.h" compile="0" resource="0"
             file="Source/PluginProcessor.h"/>
+      <FILE id="bdOkQR" name="LookAndFeel.cpp" compile="1" resource="0" file="Source/LookAndFeel.cpp"/>
+      <FILE id="nos3Fg" name="LookAndFeel.h" compile="0" resource="0" file="Source/LookAndFeel.h"/>
       <FILE id="mTFXee" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="YzwlHM" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
