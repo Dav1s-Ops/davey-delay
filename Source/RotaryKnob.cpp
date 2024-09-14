@@ -18,6 +18,9 @@ RotaryKnob::RotaryKnob(const juce::String& text,
                        const juce::ParameterID& parameterID)
     : attachment(apvts, parameterID.getParamID(), slider)
 {
+    float pi = juce::MathConstants<float>::pi;
+    
+    slider.setRotaryParameters(1.25f * pi, 2.75f * pi, true);
     slider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 70, 16);
     slider.setBounds(0, 0, 70, 86);
