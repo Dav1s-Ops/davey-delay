@@ -35,7 +35,7 @@ void RotaryKnobLookAndFeel::drawRotarySlider(juce::Graphics& g,
     g.setColour(Colors::Knob::outline);
     g.fillEllipse(knobRect);
     
-    auto innerRect = knobRect.reduced(3.0f, 3.0f);
+    auto innerRect = knobRect.reduced(2.0f, 2.0f);
     auto gradient = juce::ColourGradient(Colors::Knob::gradientTop, 0.0f, innerRect.getY(),
                                          Colors::Knob::gradientBottom, 0.0f, innerRect.getBottom(), false);
     g.setGradientFill(gradient);
@@ -66,4 +66,21 @@ void RotaryKnobLookAndFeel::drawRotarySlider(juce::Graphics& g,
     
     g.setColour(Colors::Knob::trackBackground);
     g.strokePath(backgroundArc, strokeType);
+    
+    //==============================================================================
+    // Knob dial
+    //==============================================================================
+    
+    auto dialRadius = innerRect.getHeight() / 2.0f;
+    auto toAngle = rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
+    juce::Point<float> dialStart(center.x + 10.f * std::sin(toAngle),
+                                 center.y - 10.f * std::cos(toAngle));
+    juce::Point<float> dialEnd(center.x + dialRadius * std::sin(toAngle),
+                               center.y - dialRadius * std::cos(toAngle));
+    
+    juce::Path dialPath;
+    dialPath.startNewSubPath(dialStart);
+    dialPath.lineTo(dialEnd);
+    g.setColour(Colors::Knob::dial);
+    g.strokePath(dialPath, strokeType);
 }
