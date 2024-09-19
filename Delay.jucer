@@ -11,6 +11,8 @@
       <FILE id="Vkk1gv" name="Logo.png" compile="0" resource="1" file="../getting-started-book/Resources/Logo.png"/>
     </GROUP>
     <GROUP id="{017ADE95-4AD8-ABCF-3C2A-CB513CA675AD}" name="Source">
+      <FILE id="w9sLtU" name="ProtectYourEars.h" compile="0" resource="0"
+            file="../getting-started-book/Resources/ProtectYourEars.h"/>
       <FILE id="iEYHGb" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="Aap1cE" name="PluginProcessor.h" compile="0" resource="0"
