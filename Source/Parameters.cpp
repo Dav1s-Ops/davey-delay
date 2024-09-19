@@ -58,6 +58,7 @@ Parameters::Parameters(juce::AudioProcessorValueTreeState& apvts)
     castParameter(apvts, gainParamID, gainParam);
     castParameter(apvts, delayTimeParamID, delayTimeParam);
     castParameter(apvts, mixParamID, mixParam);
+    castParameter(apvts, feedbackParamID, feedbackParam);
 }
 // Return type                                      // Function name
 juce::AudioProcessorValueTreeState::ParameterLayout Parameters::createParameterLayout()
@@ -89,6 +90,13 @@ juce::AudioProcessorValueTreeState::ParameterLayout Parameters::createParameterL
                                                            100.0f,
                                                            juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromPercent)
                                                            ));
+    layout.add(std::make_unique<juce::AudioParameterFloat>(feedbackParamID,
+                                                           "Feedback",
+                                                           juce::NormalisableRange<float>{ 0.0f, 100.f, 1.0f },
+                                                           0.0f,
+                                                           juce::AudioParameterFloatAttributes()
+                                                                .withStringFromValueFunction(stringFromPercent)
+                                                           ));
     return layout;
 }
 
@@ -103,6 +111,7 @@ void Parameters::prepareToPlay(double sampleRate) noexcept
     coeff = 1.0f - std::exp(-1.0f / (0.2f * float(sampleRate)));
     
     mixSmoother.reset(sampleRate, duration);
+    feedbackSmoother.reset(sampleRate, duration);
 }
 
 // Adds re-initializing param to be safe upon host stop/start
@@ -116,6 +125,9 @@ void Parameters::reset() noexcept
     
     mix = 1.0f;
     mixSmoother.setCurrentAndTargetValue(mixParam->get() * 0.01f);
+    
+    feedback = 0.0f;
+    feedbackSmoother.setTargetValue(feedbackParam->get() * 0.01f);
 }
 
 // Updates the parameter values based on the current settings.
@@ -130,6 +142,7 @@ void Parameters::update() noexcept
     }
     
     mixSmoother.setTargetValue(mixParam->get() * 0.01f);
+    feedbackSmoother.setTargetValue(feedbackParam->get() * 0.01f);
 }
 
 // Reads current smoothed value and sets it to variable
@@ -141,4 +154,5 @@ void Parameters::smoothen() noexcept
     delayTime += ( targetDelayTime - delayTime ) * coeff;
     
     mix = mixSmoother.getNextValue();
+    feedback = feedbackSmoother.getNextValue();
 }
