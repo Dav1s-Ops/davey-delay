@@ -8,6 +8,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "ProtectYourEars.h"
 
 //==============================================================================
 DelayAudioProcessor::DelayAudioProcessor()
@@ -181,6 +182,9 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
         }
     }
 */
+    #if JUCE_DEBUG
+        protectYourEars(buffer);
+    #endif
 }
 
 //==============================================================================
