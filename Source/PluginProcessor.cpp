@@ -73,16 +73,16 @@ int DelayAudioProcessor::getCurrentProgram()
     return 0;
 }
 
-void DelayAudioProcessor::setCurrentProgram (int index)
+void DelayAudioProcessor::setCurrentProgram ([[maybe_unused]] int index)
 {
 }
 
-const juce::String DelayAudioProcessor::getProgramName (int index)
+const juce::String DelayAudioProcessor::getProgramName ([[maybe_unused]] int index)
 {
     return {};
 }
 
-void DelayAudioProcessor::changeProgramName (int index, const juce::String& newName)
+void DelayAudioProcessor::changeProgramName ([[maybe_unused]] int index, [[maybe_unused]] const juce::String& newName)
 {
 }
 
