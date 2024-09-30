@@ -61,6 +61,9 @@ public:
 private:
     Parameters params;
     
+    float feedbackL = 0.0f;
+    float feedbackR = 0.0f;
+    
     juce::dsp::DelayLine<float, juce::dsp::DelayLineInterpolationTypes::Linear> delayLine;
     
     //==============================================================================
